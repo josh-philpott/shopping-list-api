@@ -3,7 +3,7 @@ var router = express.Router()
 var uuidv1 = require("uuid/v1")
 
 /* GET users listing. */
-router.get("/", function(req, res, next) {
+router.get("/:id", function(req, res, next) {
   res.send([
     {
       id: uuidv1(),
