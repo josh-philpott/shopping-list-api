@@ -2,7 +2,7 @@ var express = require("express")
 var router = express.Router()
 var uuidv1 = require("uuid/v1")
 
-const shoppingLists = {
+const lists = {
   "shopping-list-one": [
     {
       id: uuidv1(),
@@ -52,9 +52,13 @@ const shoppingLists = {
   ]
 }
 
+router.get("/", function(req, res) {
+  res.send(lists)
+})
+
 /* GET users listing. */
 router.get("/:id", function(req, res, next) {
-  res.send(shoppingLists[req.params.id])
+  res.send(lists[req.params.id])
 })
 
 /* POST with id */
@@ -62,21 +66,21 @@ router.post("/:id", function(req, res, next) {
   //TODO: Validation
 
   if (req.body[req.params.id]) {
-    shoppingLists[req.params.id] = req.body[req.params.id]
+    lists[req.params.id] = req.body[req.params.id]
   } else {
-    shoppingLists[req.params.id] = []
+    lists[req.params.id] = []
   }
-  res.send(shoppingLists[req.params.id])
+  res.send(lists[req.params.id])
 })
 
 /* POST with no id creates a new list and returns the id... If it contains a list, saves the list */
 router.post("/", function(req, res, next) {
   const key = uuidv1()
   if (req.body.shoppingList) {
-    shoppingLists[key] = req.body.shoppingList
+    lists[key] = req.body.shoppingList
   } else {
-    shoppingLists[key] = []
+    lists[key] = []
   }
-  res.send({ id: key, shoppingList: shoppingLists[key] })
+  res.send({ id: key, list: lists[key] })
 })
 module.exports = router
